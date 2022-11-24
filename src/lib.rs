@@ -23,6 +23,18 @@ pub struct Universe {
 }
 #[wasm_bindgen]
 impl Universe {
+    pub fn width(&self) -> u32 {
+        self.width
+    }
+
+    pub fn height(&self) -> u32 {
+        self.height
+    }
+
+    pub fn cells(&self) -> *const Cell {
+        self.cells.as_ptr()
+    }
+
     pub fn tick(&mut self) {
         let mut next = self.cells.clone();
 
@@ -70,7 +82,7 @@ impl Universe {
 
         let cells = (0..width * height)
             .map(|i| {
-                if i % 2 == 0 || i % 7 == 0 {
+                if i % 2 == 0 || i % 5 == 0 {
                     Cell::Alive
                 } else {
                     Cell::Dead
