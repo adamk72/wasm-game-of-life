@@ -21,6 +21,7 @@ pub struct Universe {
     height: u32,
     cells: Vec<Cell>,
 }
+
 #[wasm_bindgen]
 impl Universe {
     pub fn width(&self) -> u32 {
@@ -33,6 +34,16 @@ impl Universe {
 
     pub fn cells(&self) -> *const Cell {
         self.cells.as_ptr()
+    }
+
+    pub fn set_width(&mut self, width: u32) {
+        self.width = width;
+        self.cells = (0..width * self.height).map(|_i| Cell::Dead).collect();
+    }
+
+    pub fn set_height(&mut self, height: u32) {
+        self.height = height;
+        self.cells = (0..self.width * height).map(|_i| Cell::Dead).collect();
     }
 
     pub fn tick(&mut self) {
@@ -114,5 +125,21 @@ impl fmt::Display for Universe {
             write!(f, "\n")?;
         }
         Ok(())
+    }
+}
+
+impl Universe {
+    /// Get the dead and alive values of the entire universe.
+    pub fn get_cells(&self) -> &[Cell] {
+        &self.cells
+    }
+
+    /// Set cells to be alive in a universe by passing the row and column
+    /// of each cell as an array.
+    pub fn set_cells(&mut self, cells: &[(u32, u32)]) {
+        for (row, col) in cells.iter().cloned() {
+            let idx = self.get_index(row, col);
+            self.cells[idx] = Cell::Alive;
+        }
     }
 }
