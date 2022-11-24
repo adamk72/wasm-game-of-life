@@ -23,16 +23,20 @@ const isPaused = () => {
   return animationId === null;
 };
 
+let renderCount = 0
 
 const renderLoop = () => {
   
-  // for (let i = 0;  i < 5; i++) 
+  if (renderCount % speedControl.value === 0) {
     universe.tick();
+    renderCount = 0;
+  }
 
   drawGrid();
   drawCells();
 
   animationId = requestAnimationFrame(renderLoop);
+  renderCount++
 };
 
 const drawGrid = () => {
@@ -85,6 +89,8 @@ const drawCells = () => {
 };
 
 const playPauseButton = document.getElementById("play-pause");
+const speedControl = document.getElementById("speed");
+
 
 const play = () => {
   playPauseButton.textContent = "⏸";
