@@ -15,6 +15,16 @@ pub enum Cell {
     Dead = 0,
     Alive = 1,
 }
+
+impl Cell {
+    fn toggle(&mut self) {
+        *self = match *self {
+            Cell::Dead => Cell::Alive,
+            Cell::Alive => Cell::Dead,
+        };
+    }
+}
+
 #[wasm_bindgen]
 pub struct Universe {
     width: u32,
@@ -24,6 +34,11 @@ pub struct Universe {
 
 #[wasm_bindgen]
 impl Universe {
+    pub fn toggle_cell(&mut self, row: u32, column: u32) {
+        let idx = self.get_index(row, column);
+        self.cells[idx].toggle();
+    }
+
     pub fn width(&self) -> u32 {
         self.width
     }
