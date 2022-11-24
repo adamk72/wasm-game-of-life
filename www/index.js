@@ -25,7 +25,9 @@ const isPaused = () => {
 
 
 const renderLoop = () => {
-  universe.tick();
+  
+  // for (let i = 0;  i < 5; i++) 
+    universe.tick();
 
   drawGrid();
   drawCells();
@@ -115,7 +117,17 @@ canvas.addEventListener("click", event => {
   const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
   const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
 
-  universe.toggle_cell(row, col);
+  if (event.metaKey)
+  {
+    universe.toggle_cell(row, col);
+    universe.toggle_cell(row, col - 1);
+    universe.toggle_cell(row, col - 2);
+    universe.toggle_cell(row - 1, col);
+    universe.toggle_cell(row - 2, col - 1);
+
+  } else {
+    universe.toggle_cell(row, col);
+  }
 
   drawGrid();
   drawCells();
